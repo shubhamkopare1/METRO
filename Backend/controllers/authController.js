@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const { v4: uuidv4 } = require('uuid')
 const { generateToken } = require('../utils/jwtUtils');
 
 exports.register = async (req, res) => {
@@ -10,9 +11,9 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: "User already exists." });
     }
 
-    const newUser = new User({ name, email, password }); // Create an instance
+    const newUser = new User({ name, email, password ,uuid: uuidv4() }); 
 await newUser.save();
-    const token = generateToken(newUser._id);
+    const token = generateToken(newUser.uuid);
 
     res.status(201).json({ message: "User registered successfully.", token });
   } catch (error) {
@@ -34,7 +35,7 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials." });
     }
 
-    const token = generateToken(user._id);
+    const token = generateToken(user.uuid);
     res.status(200).json({ message: "Login successful.", token });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error", error: error.message });
