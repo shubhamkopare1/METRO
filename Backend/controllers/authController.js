@@ -11,9 +11,9 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: "User already exists." });
     }
 
-    const newUser = new User({ name, email, password ,uuid: uuidv4() }); 
+    const newUser = new User({ name, email, password ,userId: uuidv4() }); 
 await newUser.save();
-    const token = generateToken(newUser.uuid);
+    const token = generateToken(newUser.userId);
 
     res.status(201).json({ message: "User registered successfully.", token });
   } catch (error) {
@@ -35,7 +35,7 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials." });
     }
 
-    const token = generateToken(user.uuid);
+    const token = generateToken(user.userId);
     res.status(200).json({ message: "Login successful.", token });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error", error: error.message });

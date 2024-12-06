@@ -4,7 +4,7 @@ const User = require("../models/User");
 // Get Profile by User ID
 exports.getProfile = async (req, res) => {
   try {
-    const profile = await User.findOne({ uuid: req.user.id }); // Find profile by user ID
+    const profile = await User.findOne({ userId: req.user.id }); 
     if (!profile) {
       return res.status(404).json({ message: "Profile not found" });
     }
